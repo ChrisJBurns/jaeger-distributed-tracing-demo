@@ -1,0 +1,3 @@
+[submodule "jaegar-tracing-java-service"]
+	path = jaegar-tracing-java-service
+	url = git@github.com:ChrisJBurns/jaegar-tracing-java-service.git
