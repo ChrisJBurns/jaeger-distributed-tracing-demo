@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  jaeger-tracing-java-service:
+    build: 
+      context: "./jaeger-tracing-java-service"
+      # dockerfile: Dockerfile-alternate
+    ports: 
+      - "8080:8080"
