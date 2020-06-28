@@ -5,13 +5,32 @@ services:
     container_name: jaeger-tracing-java-service
     build: 
       context: "./jaeger-tracing-java-service"
-      # dockerfile: Dockerfile-alternate
+    environment:
+        - JAEGER_SERVICE_NAME=java-service
+        - JAEGER_AGENT_HOST=jaeger-tracing
+        - JAEGER_AGENT_PORT=6831
+        - JAEGER_REPORTER_LOG_SPANS=true
     ports: 
       - "8080:8080"
+
+  jaeger-tracing-nodejs-service:
+    container_name: jaeger-tracing-nodejs-service
+    build: 
+      context: "./jaeger-tracing-nodejs-service"
+    environment:
+        - JAEGER_SERVICE_NAME=nodejs-service
+        - JAEGER_AGENT_PORT=6832
+    ports: 
+      - "8090:8090"
 
   jaeger-tracing:
     image: jaegertracing/all-in-one:1.9
     container_name: jaeger-tracing
     ports:
-      - "16686:16686"
+      - "5775:5775/udp"
+      - "5778:5778"
       - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "9411:9411"
+      - "14268:14268"
+      - "16686:16686"

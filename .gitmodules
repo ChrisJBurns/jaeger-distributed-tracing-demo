@@ -1,3 +1,6 @@
 [submodule "jaeger-tracing-java-service"]
 	path = jaeger-tracing-java-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-java-service.git
+[submodule "jaeger-tracing-nodejs-service"]
+	path = jaeger-tracing-nodejs-service
+	url = git@github.com:ChrisJBurns/jaeger-tracing-nodejs-service.git
