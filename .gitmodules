@@ -7,3 +7,6 @@
 [submodule "jaeger-tracing-go-service"]
 	path = jaeger-tracing-go-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-go-service.git
+[submodule "jaeger-tracing-python-service"]
+	path = jaeger-tracing-python-service
+	url = git@github.com:ChrisJBurns/jaeger-tracing-python-service.git

@@ -1,27 +1,63 @@
 version: "3.8"
 
 services:
+  employee-mongo:
+    container_name: employee-mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGODB_USER: user
+      MONGODB_PASS: user
+    ports:
+      - 27017:27017
+
+  jaeger-tracing-go-service:
+    container_name: jaeger-tracing-go-service
+    build: 
+      context: "./jaeger-tracing-go-service"
+    environment:
+        MONGODB_URI: mongodb://admin:admin@employee-mongo:27017/admin
+        DATABASE_NAME: employees
+        OTEL_EXPORTER: jaeger
+        OTEL_JAEGER_ENDPOINT: http://jaeger-tracing:14268
+        OTEL_JAEGER_SERVICE_NAME: go-service
+    ports: 
+      - "8091:8091"
+
+  jaeger-tracing-python-service:
+    container_name: jaeger-tracing-python-service
+    build: 
+      context: "./jaeger-tracing-python-service"
+    environment:
+        OTEL_JAEGER_AGENT_HOST: jaeger-tracing
+        OTEL_JAEGER_AGENT_PORT: 6831
+        OTEL_JAEGER_SERVICE_NAME: python-service
+    ports: 
+      - "8092:8092"
+
   jaeger-tracing-java-service:
     container_name: jaeger-tracing-java-service
     build: 
       context: "./jaeger-tracing-java-service"
     environment:
-        - JAEGER_SERVICE_NAME=java-service
-        - JAEGER_AGENT_HOST=jaeger-tracing
-        - JAEGER_AGENT_PORT=6831
-        - JAEGER_REPORTER_LOG_SPANS=true
-    ports: 
-      - "8080:8080"
-
-  jaeger-tracing-nodejs-service:
-    container_name: jaeger-tracing-nodejs-service
-    build: 
-      context: "./jaeger-tracing-nodejs-service"
-    environment:
-        - JAEGER_SERVICE_NAME=nodejs-service
-        - JAEGER_AGENT_PORT=6832
+        - OTEL_EXPORTER=jaeger
+        - OTEL_JAEGER_ENDPOINT=jaeger-tracing:14250
+        - OTEL_JAEGER_SERVICE_NAME=java-service
+        # - OTEL_EXPORTER=logging
     ports: 
       - "8090:8090"
+
+  # jaeger-tracing-nodejs-service:
+  #   container_name: jaeger-tracing-nodejs-service
+  #   build: 
+  #     context: "./jaeger-tracing-nodejs-service"
+  #   environment:
+  #       - JAEGER_SERVICE_NAME=nodejs-service
+  #       - JAEGER_AGENT_PORT=6832
+  #   ports: 
+  #     - "8080:8080"
 
   jaeger-tracing:
     image: jaegertracing/all-in-one:1.9
