@@ -46,9 +46,9 @@ services:
       OTEL_EXPORTER: jaeger
       OTEL_JAEGER_ENDPOINT: jaeger-tracing:14250
       OTEL_JAEGER_SERVICE_NAME: java-service
-      SPRING.DATASOURCE.URL: jdbc:postgresql://salary-postgres:5432/salary-grade
-      SPRING.DATASOURCE.USERNAME: postgres
-      SPRING.DATASOURCE.PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://salary-postgres:5432/salary-grade
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
       SERVER_PORT: 8090
     ports: 
       - "8090:8090"
@@ -72,21 +72,39 @@ services:
       JAEGER_AGENT_HOST: jaeger-tracing
       JAEGER_AGENT_PORT: 6832
       SERVER_PORT: 8081
-      GO_SERVICE_URL: http://jaeger-tracing-go-service:8091/
       JAVA_SERVICE_URL: http://jaeger-tracing-java-service:8090/
+      GO_SERVICE_URL: http://jaeger-tracing-go-service:8091/
+      PYTHON_SERVICE_URL: http://jaeger-tracing-python-service:8092/
     ports: 
       - "8081:8081"
 
-  # jaeger-tracing-python-service:
-  #   container_name: jaeger-tracing-python-service
-  #   build: 
-  #     context: "./jaeger-tracing-python-service"
-  #   environment:
-  #       OTEL_JAEGER_AGENT_HOST: jaeger-tracing
-  #       OTEL_JAEGER_AGENT_PORT: 6831
-  #       OTEL_JAEGER_SERVICE_NAME: python-service
-  #   ports: 
-  #     - "8092:8092"
+  jaeger-tracing-python-service:
+    container_name: jaeger-tracing-python-service
+    build: 
+      context: "./jaeger-tracing-python-service"
+    environment:
+        OTEL_JAEGER_AGENT_HOST: jaeger-tracing
+        OTEL_JAEGER_AGENT_PORT: 6831
+        OTEL_JAEGER_SERVICE_NAME: python-service
+        OTEL_PYTHON_TRACER_PROVIDER: sdk_tracer_provider
+        MYSQL_USER: admin
+        MYSQL_PASSWORD: password
+        MYSQL_HOST: jaeger-tracing-salaryamount-mysql
+    ports: 
+      - "8092:8092"
+
+  jaeger-tracing-salaryamount-mysql:
+    container_name: jaeger-tracing-salaryamount-mysql
+    build: 
+      context: "./jaeger-tracing-salaryamount-mysql"
+    restart: always
+    environment:
+      ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: salary_amount
+    ports:
+      - "3306:3306"
 
   jaeger-tracing:
     image: jaegertracing/all-in-one:1.9

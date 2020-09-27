@@ -16,3 +16,6 @@
 [submodule "jaeger-tracing-salary-postgres"]
 	path = jaeger-tracing-salary-postgres
 	url = git@github.com:ChrisJBurns/jaeger-tracing-salary-postgres.git
+[submodule "jaeger-tracing-salaryamount-mysql"]
+	path = jaeger-tracing-salaryamount-mysql
+	url = git@github.com:ChrisJBurns/jaeger-tracing-salaryamount-mysql.git
