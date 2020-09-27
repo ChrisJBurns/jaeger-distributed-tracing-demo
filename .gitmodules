@@ -10,3 +10,9 @@
 [submodule "jaeger-tracing-python-service"]
 	path = jaeger-tracing-python-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-python-service.git
+[submodule "jaeger-tracing-frontend-service"]
+	path = jaeger-tracing-frontend-service
+	url = git@github.com:ChrisJBurns/jaeger-tracing-frontend-service.git
+[submodule "jaeger-tracing-salary-postgres"]
+	path = jaeger-tracing-salary-postgres
+	url = git@github.com:ChrisJBurns/jaeger-tracing-salary-postgres.git

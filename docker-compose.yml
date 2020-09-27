@@ -26,38 +26,67 @@ services:
     ports: 
       - "8091:8091"
 
-  jaeger-tracing-python-service:
-    container_name: jaeger-tracing-python-service
+  salary-grade-postgres-database:
+    container_name: salary-postgres
     build: 
-      context: "./jaeger-tracing-python-service"
+      context: "./jaeger-tracing-salary-postgres"
+    restart: always
+    ports:
+      - "5432:5432"
     environment:
-        OTEL_JAEGER_AGENT_HOST: jaeger-tracing
-        OTEL_JAEGER_AGENT_PORT: 6831
-        OTEL_JAEGER_SERVICE_NAME: python-service
-    ports: 
-      - "8092:8092"
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=salary-grade
 
   jaeger-tracing-java-service:
     container_name: jaeger-tracing-java-service
     build: 
       context: "./jaeger-tracing-java-service"
     environment:
-        - OTEL_EXPORTER=jaeger
-        - OTEL_JAEGER_ENDPOINT=jaeger-tracing:14250
-        - OTEL_JAEGER_SERVICE_NAME=java-service
-        # - OTEL_EXPORTER=logging
+      OTEL_EXPORTER: jaeger
+      OTEL_JAEGER_ENDPOINT: jaeger-tracing:14250
+      OTEL_JAEGER_SERVICE_NAME: java-service
+      SPRING.DATASOURCE.URL: jdbc:postgresql://salary-postgres:5432/salary-grade
+      SPRING.DATASOURCE.USERNAME: postgres
+      SPRING.DATASOURCE.PASSWORD: password
+      SERVER_PORT: 8090
     ports: 
       - "8090:8090"
 
-  # jaeger-tracing-nodejs-service:
-  #   container_name: jaeger-tracing-nodejs-service
+  jaeger-tracing-frontend-service:
+    container_name: jaeger-tracing-frontend-service
+    build: 
+      context: "./jaeger-tracing-frontend-service"
+    environment:
+      SERVER_PORT: 8080
+      NODEJS: http://jaeger-tracing-nodejs-service:8081/
+    ports: 
+      - "8080:8080"
+
+  jaeger-tracing-nodejs-service:
+    container_name: jaeger-tracing-nodejs-service
+    build: 
+      context: "./jaeger-tracing-nodejs-service"
+    environment:
+      SERVICE_NAME: nodejs-service
+      JAEGER_AGENT_HOST: jaeger-tracing
+      JAEGER_AGENT_PORT: 6832
+      SERVER_PORT: 8081
+      GO_SERVICE_URL: http://jaeger-tracing-go-service:8091/
+      JAVA_SERVICE_URL: http://jaeger-tracing-java-service:8090/
+    ports: 
+      - "8081:8081"
+
+  # jaeger-tracing-python-service:
+  #   container_name: jaeger-tracing-python-service
   #   build: 
-  #     context: "./jaeger-tracing-nodejs-service"
+  #     context: "./jaeger-tracing-python-service"
   #   environment:
-  #       - JAEGER_SERVICE_NAME=nodejs-service
-  #       - JAEGER_AGENT_PORT=6832
+  #       OTEL_JAEGER_AGENT_HOST: jaeger-tracing
+  #       OTEL_JAEGER_AGENT_PORT: 6831
+  #       OTEL_JAEGER_SERVICE_NAME: python-service
   #   ports: 
-  #     - "8080:8080"
+  #     - "8092:8092"
 
   jaeger-tracing:
     image: jaegertracing/all-in-one:1.9
