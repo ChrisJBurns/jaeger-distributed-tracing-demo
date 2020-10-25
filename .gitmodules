@@ -1,21 +1,28 @@
 [submodule "jaeger-tracing-java-service"]
 	path = jaeger-tracing-java-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-java-service.git
+	branch = master
 [submodule "jaeger-tracing-nodejs-service"]
 	path = jaeger-tracing-nodejs-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-nodejs-service.git
+	branch = master
 [submodule "jaeger-tracing-go-service"]
 	path = jaeger-tracing-go-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-go-service.git
+	branch = master
 [submodule "jaeger-tracing-python-service"]
 	path = jaeger-tracing-python-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-python-service.git
+	branch = master
 [submodule "jaeger-tracing-frontend-service"]
 	path = jaeger-tracing-frontend-service
 	url = git@github.com:ChrisJBurns/jaeger-tracing-frontend-service.git
+	branch = master
 [submodule "jaeger-tracing-salary-postgres"]
 	path = jaeger-tracing-salary-postgres
 	url = git@github.com:ChrisJBurns/jaeger-tracing-salary-postgres.git
+	branch = master
 [submodule "jaeger-tracing-salaryamount-mysql"]
 	path = jaeger-tracing-salaryamount-mysql
 	url = git@github.com:ChrisJBurns/jaeger-tracing-salaryamount-mysql.git
+	branch = master
