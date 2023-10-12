@@ -10,6 +10,6 @@ git submodule update --recursive
 
 To build all projects run `docker-compose build`. Initially, the Java service will fail because you will need to build the jar. Once this has been built, you should be able to build all projects.
 
-To run the demo, run `docker-compose run`.
+To run the demo, run `docker-compose up`.
 
 To update the sub-modules to latest commits, run `git submodule update --remote`
